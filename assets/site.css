@@ -95,19 +95,36 @@ p { margin: 0 0 1em; }
   flex-wrap: wrap;
 }
 .logo {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
   font-family: var(--serif);
-  font-size: 1.75rem;
+  font-size: 2.3rem;
+  font-weight: 650;
+  letter-spacing: -0.02em;
   color: var(--ink);
   text-decoration: none;
-  letter-spacing: 0.01em;
 }
-.logo { display: inline-flex; align-items: center; line-height: 1; }
-.logo em { font-style: italic; color: var(--accent); }
+.logo em { font-style: italic; font-weight: 600; letter-spacing: -0.01em; color: var(--accent); }
 .logo .seam {
   display: inline-block;
-  height: 1.25em;
-  margin: 0 0.16em 0 0.18em;
-  border-left: 2px dashed var(--accent);
+  width: 3.5px;
+  height: 1.3em;
+  margin: 0 0.2em 0 0.22em;
+  border-radius: 2px;
+  background: repeating-linear-gradient(to bottom, var(--accent) 0 5px, transparent 5px 9px);
+}
+.logo:hover .seam { background: repeating-linear-gradient(to bottom, var(--ink) 0 5px, transparent 5px 9px); }
+
+/* Homepage load: the seam stitches top to bottom, then "line" slides in. */
+.logo--animate .seam { animation: stitch-down 0.7s steps(7, end) 0.15s both; }
+.logo--animate em { animation: line-in 0.6s cubic-bezier(.2,.7,.2,1) 0.85s both; }
+.logo--animate .word { animation: word-in 0.5s ease-out both; }
+@keyframes stitch-down { from { clip-path: inset(0 0 100% 0); } to { clip-path: inset(0 0 0 0); } }
+@keyframes line-in { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: none; } }
+@keyframes word-in { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .logo--animate .seam, .logo--animate em, .logo--animate .word { animation: none; }
 }
 .nav-links {
   display: flex;
@@ -130,6 +147,8 @@ p { margin: 0 0 1em; }
   color: var(--ink);
   cursor: pointer;
 }
+
+@media (max-width: 520px) { .logo { font-size: 1.9rem; } }
 
 @media (max-width: 860px) {
   .js .nav-toggle { display: inline-block; }
