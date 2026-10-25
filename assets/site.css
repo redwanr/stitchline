@@ -187,8 +187,8 @@ p { margin: 0 0 1em; }
   margin: 0;
   padding: 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 32px;
+  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  gap: 28px;
   counter-reset: step;
 }
 .steps li { border-top: 1px solid var(--ink); padding-top: 18px; }
