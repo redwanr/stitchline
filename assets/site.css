@@ -96,12 +96,19 @@ p { margin: 0 0 1em; }
 }
 .logo {
   font-family: var(--serif);
-  font-size: 1.6rem;
+  font-size: 1.75rem;
   color: var(--ink);
   text-decoration: none;
   letter-spacing: 0.01em;
 }
-.logo span { color: var(--accent); }
+.logo { display: inline-flex; align-items: center; line-height: 1; }
+.logo em { font-style: italic; color: var(--accent); }
+.logo .seam {
+  display: inline-block;
+  height: 1.25em;
+  margin: 0 0.16em 0 0.18em;
+  border-left: 2px dashed var(--accent);
+}
 .nav-links {
   display: flex;
   align-items: center;
@@ -290,7 +297,7 @@ p { margin: 0 0 1em; }
 .footer ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
 .footer a { color: var(--ink); text-decoration: none; }
 .footer a:hover { color: var(--accent); }
-.footer .logo { display: inline-block; margin-bottom: 8px; }
+.footer .logo { margin-bottom: 12px; }
 .footer .legal { grid-column: 1 / -1; border-top: 1px solid var(--rule); padding-top: 20px; margin-top: 8px; }
 
 /* Redirect stubs */
