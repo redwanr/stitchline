@@ -1,907 +1,130 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stitchline — Data, AI &amp; Operations Consulting for RMG Manufacturers</title>
-<meta name="description" content="Boutique data-science, operations-research, and applied AI consulting for garment factories. Planning dashboards, line-balancing optimization, and bespoke AI/agentic tools.">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%276%27 y=%276%27 width=%2720%27 height=%2720%27 fill=%27none%27 stroke=%27%23e8871e%27 stroke-width=%273%27 transform=%27rotate(45 16 16)%27/%3E%3C/svg%3E">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stitchline · Applied AI for garment factories</title>
+<meta name="description" content="Stitchline builds AI tools for costing, SAM, line planning and product trends in Bangladesh RMG factories. Your team signs off on every result.">
+<meta property="og:title" content="Stitchline · Applied AI for garment factories">
+<meta property="og:description" content="AI tools for costing, SAM, line planning and product trends in Bangladesh RMG. Your team signs off on every result.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#14181c;
-    --panel:#1b2129;
-    --panel-2:#222932;
-    --paper:#ede7da;
-    --paper-dim:#ddd5c2;
-    --accent:#e8871e;
-    --accent-2:#4fa88f;
-    --text:#edeff2;
-    --text-dim:#8b95a1;
-    --line:rgba(237,239,242,0.14);
-    --line-soft:rgba(237,239,242,0.08);
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--ink);
-    color:var(--text);
-    font-family:'IBM Plex Sans', sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3{
-    font-family:'Big Shoulders Display', sans-serif;
-    font-weight:800;
-    text-transform:uppercase;
-    letter-spacing:0.01em;
-    margin:0;
-  }
-  .mono{font-family:'IBM Plex Mono', monospace;}
-  a{color:inherit;}
-  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
-  img,svg{display:block; max-width:100%;}
-
-  /* ---------- stitch divider ---------- */
-  .stitch{
-    display:flex; align-items:center; gap:10px;
-    padding:14px 0;
-  }
-  .stitch .dashes{
-    flex:1; height:0;
-    border-top:2px dashed var(--line);
-  }
-  .stitch .label{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    letter-spacing:0.18em;
-    color:var(--text-dim);
-    white-space:nowrap;
-    text-transform:uppercase;
-  }
-
-  /* ---------- nav ---------- */
-  .nav{
-    position:sticky; top:0; z-index:50;
-    background:rgba(20,24,28,0.92);
-    backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--line-soft);
-  }
-  .nav-inner{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:18px 32px;
-    max-width:1180px; margin:0 auto;
-  }
-  .brand{
-    display:flex; align-items:center; gap:10px;
-    font-family:'Big Shoulders Display', sans-serif;
-    font-weight:800; font-size:22px; letter-spacing:0.02em;
-  }
-  .brand .mark{
-    width:22px; height:22px;
-    border:2px solid var(--accent);
-    position:relative;
-    transform:rotate(45deg);
-  }
-  .brand .mark::after{
-    content:"";
-    position:absolute; inset:5px;
-    border-top:2px dashed var(--accent);
-  }
-  .nav-links{
-    display:flex; align-items:center; gap:34px;
-    font-size:14px;
-    color:var(--text-dim);
-  }
-  .nav-links a{
-    text-decoration:none;
-    transition:color .15s ease;
-  }
-  .nav-links a:hover{color:var(--text);}
-  .btn{
-    display:inline-flex; align-items:center; gap:8px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:13px; letter-spacing:0.04em; text-transform:uppercase;
-    padding:12px 20px;
-    background:var(--accent);
-    color:#14181c;
-    text-decoration:none;
-    border:none;
-    cursor:pointer;
-    font-weight:500;
-    transition:transform .15s ease, background .15s ease;
-  }
-  .btn:hover{background:#f49a3a; transform:translateY(-1px);}
-  .btn-ghost{
-    background:transparent;
-    color:var(--text);
-    border:1px solid var(--line);
-  }
-  .btn-ghost:hover{border-color:var(--accent); color:var(--accent); background:transparent;}
-  .nav-toggle{
-    display:none;
-    background:none;
-    border:1px solid var(--line);
-    color:var(--text);
-    font-size:18px; line-height:1;
-    padding:8px 12px;
-    cursor:pointer;
-  }
-  @media (max-width:920px){
-    .nav-toggle{display:block;}
-    .nav-links.open{
-      display:flex; flex-direction:column; align-items:flex-start; gap:20px;
-      position:absolute; top:100%; left:0; right:0;
-      background:var(--ink);
-      border-bottom:1px solid var(--line-soft);
-      padding:22px 32px;
-    }
-  }
-
-  /* ---------- hero ---------- */
-  .hero{
-    padding:88px 0 60px;
-    position:relative;
-    overflow:hidden;
-  }
-  .hero-grid{
-    display:grid;
-    grid-template-columns:1.05fr 0.95fr;
-    gap:56px;
-    align-items:center;
-  }
-  .eyebrow{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px; letter-spacing:0.2em; text-transform:uppercase;
-    color:var(--accent);
-    display:flex; align-items:center; gap:10px;
-    margin-bottom:20px;
-  }
-  .eyebrow::before{
-    content:"";
-    width:22px; height:1px;
-    background:var(--accent);
-  }
-  .hero h1{
-    font-size:clamp(40px,5vw,64px);
-    line-height:0.98;
-    color:var(--paper);
-  }
-  .hero h1 .accent{color:var(--accent);}
-  .hero p.sub{
-    font-size:17px;
-    line-height:1.6;
-    color:var(--text-dim);
-    max-width:480px;
-    margin:24px 0 34px;
-  }
-  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
-
-  .hero-stats{
-    display:flex; gap:34px;
-    margin-top:46px;
-    padding-top:26px;
-    border-top:1px solid var(--line-soft);
-  }
-  .hero-stats div{display:flex; flex-direction:column; gap:4px;}
-  .hero-stats .num{
-    font-family:'Big Shoulders Display', sans-serif;
-    font-weight:700; font-size:30px; color:var(--paper);
-  }
-  .hero-stats .lbl{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim);
-  }
-
-  /* ---------- line balancing chart (hero visual) ---------- */
-  .chart-card{
-    background:var(--panel);
-    border:1px solid var(--line-soft);
-    padding:22px 22px 18px;
-  }
-  .chart-card .chart-head{
-    display:flex; justify-content:space-between; align-items:baseline;
-    margin-bottom:16px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim);
-  }
-  .chart-card .chart-head .tag{
-    color:var(--accent-2);
-  }
-  .bars{
-    display:flex; align-items:flex-end; gap:10px;
-    height:180px;
-    position:relative;
-  }
-  .bars .target{
-    position:absolute; left:0; right:0;
-    border-top:2px dashed var(--text-dim);
-    opacity:.6;
-  }
-  .bar-col{flex:1; display:flex; flex-direction:column; align-items:center; gap:8px;}
-  .bar{
-    width:100%;
-    background:var(--panel-2);
-    border-top:3px solid var(--accent);
-    position:relative;
-  }
-  .bar.balanced{border-top-color:var(--accent-2);}
-  .bar-col .op{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10px; color:var(--text-dim);
-  }
-  .chart-foot{
-    display:flex; justify-content:space-between;
-    margin-top:14px; padding-top:14px;
-    border-top:1px solid var(--line-soft);
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px; color:var(--text-dim);
-  }
-  .chart-foot b{color:var(--paper); font-weight:500;}
-
-  /* ---------- section shell ---------- */
-  section{padding:78px 0;}
-  .section-head{
-    display:flex; justify-content:space-between; align-items:flex-end;
-    gap:20px; margin-bottom:44px; flex-wrap:wrap;
-  }
-  .section-head h2{
-    font-size:clamp(28px,3.4vw,42px);
-    color:var(--paper);
-  }
-  .section-head p{
-    color:var(--text-dim);
-    max-width:420px;
-    line-height:1.6;
-    font-size:15px;
-  }
-  .kicker{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px; letter-spacing:0.18em; text-transform:uppercase;
-    color:var(--accent); margin-bottom:10px; display:block;
-  }
-
-  /* ---------- operation bulletin (services) ---------- */
-  .bulletin{
-    background:var(--panel);
-    border:1px solid var(--line-soft);
-  }
-  .bulletin-row{
-    display:grid;
-    grid-template-columns:70px 1.4fr 1fr 1fr;
-    gap:20px;
-    padding:22px 26px;
-    border-bottom:1px solid var(--line-soft);
-    align-items:center;
-    transition:background .15s ease;
-  }
-  .bulletin-row:last-child{border-bottom:none;}
-  .bulletin-row:hover{background:var(--panel-2);}
-  .bulletin-row.head{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
-    color:var(--text-dim);
-    padding:14px 26px;
-  }
-  .op-no{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:13px; color:var(--accent);
-  }
-  .op-name{
-    font-size:17px; font-weight:600; color:var(--paper);
-  }
-  .op-name span{
-    display:block; font-size:13px; font-weight:400; color:var(--text-dim); margin-top:4px; line-height:1.5;
-  }
-  .op-method, .op-outcome{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12.5px; color:var(--text-dim); line-height:1.6;
-  }
-  .op-outcome b{color:var(--accent-2); font-weight:500;}
-
-  /* ---------- pillar tags ---------- */
-  .pillar-tag{
-    display:inline-flex; align-items:center; justify-content:center;
-    width:22px; height:22px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10px; font-weight:500;
-    border:1px solid var(--line);
-    color:var(--text-dim);
-    flex-shrink:0;
-  }
-  .pillar-tag.on{
-    border-color:var(--accent-2);
-    color:var(--accent-2);
-  }
-
-  /* ---------- AI maturity ladder ---------- */
-  .ladder-legend{
-    display:flex; gap:22px; margin-bottom:26px; flex-wrap:wrap;
-    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--text-dim);
-  }
-  .ladder-legend span{display:flex; align-items:center; gap:8px;}
-  .ladder-legend i{width:10px; height:10px; display:inline-block;}
-  .ladder{
-    background:var(--panel);
-    border:1px solid var(--line-soft);
-  }
-  .ladder-row{
-    display:grid;
-    grid-template-columns:210px 1fr 1fr 1fr;
-    border-bottom:1px solid var(--line-soft);
-  }
-  .ladder-row:last-child{border-bottom:none;}
-  .ladder-row.head > div{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;
-    color:var(--text-dim);
-    padding:14px 20px;
-  }
-  .ladder-row.head .now-col{color:var(--text-dim);}
-  .ladder-row.head .next-col{color:var(--accent);}
-  .ladder-row.head .future-col{color:var(--text-dim);}
-  .ladder-cap{
-    padding:20px 20px 20px 22px;
-    display:flex; align-items:center; gap:10px;
-    border-right:1px solid var(--line-soft);
-  }
-  .ladder-cap .name{font-size:14.5px; font-weight:600; color:var(--paper); line-height:1.4;}
-  .ladder-cell{
-    padding:18px 20px;
-    font-size:12.5px; line-height:1.6; color:var(--text-dim);
-    border-right:1px solid var(--line-soft);
-  }
-  .ladder-cell:last-child{border-right:none;}
-  .ladder-cell.next-col{
-    background:rgba(232,135,30,0.07);
-    color:var(--paper);
-    position:relative;
-  }
-  .ladder-note{
-    margin-top:22px;
-    padding:18px 22px;
-    border:1px dashed var(--line);
-    display:flex; align-items:center; gap:14px;
-    font-size:13px; color:var(--text-dim); line-height:1.6;
-  }
-  .ladder-note b{color:var(--accent); font-weight:500;}
-
-  /* ---------- approach (line stations) ---------- */
-  .stations{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:1px;
-    background:var(--line-soft);
-    border:1px solid var(--line-soft);
-  }
-  .station{
-    background:var(--ink);
-    padding:30px 26px;
-    position:relative;
-  }
-  .station .st-no{
-    font-family:'Big Shoulders Display', sans-serif;
-    font-size:44px; font-weight:800;
-    color:var(--panel-2);
-    -webkit-text-stroke:1px var(--line);
-    line-height:1;
-    margin-bottom:18px;
-  }
-  .station h3{
-    font-size:19px; color:var(--paper); margin-bottom:10px;
-    text-transform:none; letter-spacing:0; font-weight:700;
-  }
-  .station p{
-    font-size:13.5px; color:var(--text-dim); line-height:1.6; margin:0;
-  }
-  .station::after{
-    content:"";
-    position:absolute; right:0; top:30%; bottom:30%;
-    border-right:2px dashed var(--line);
-  }
-  .station:last-child::after{display:none;}
-
-  /* ---------- capabilities ---------- */
-  .cap-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:22px;
-  }
-  @media (max-width:1080px){
-    .cap-grid{grid-template-columns:repeat(2,1fr);}
-  }
-  .cap-card{
-    background:var(--panel);
-    border:1px solid var(--line-soft);
-    padding:26px;
-    display:flex; flex-direction:column; gap:18px;
-  }
-  .cap-card .cap-tag{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;
-    color:var(--accent-2);
-    border:1px solid var(--accent-2);
-    align-self:flex-start;
-    padding:3px 8px;
-  }
-  .cap-card h3{
-    font-size:20px; color:var(--paper); text-transform:none; letter-spacing:0;
-  }
-  .cap-card p{
-    font-size:13.5px; color:var(--text-dim); line-height:1.6; margin:0;
-  }
-  .cap-visual{
-    height:110px;
-    background:var(--panel-2);
-    border:1px solid var(--line-soft);
-    display:flex; align-items:center; justify-content:center;
-    padding:14px;
-  }
-  /* mini visuals */
-  .mini-sam{width:100%; display:flex; flex-direction:column; gap:6px;}
-  .mini-sam .row{display:flex; align-items:center; gap:8px;}
-  .mini-sam .track{flex:1; height:6px; background:var(--ink); position:relative;}
-  .mini-sam .fill{position:absolute; top:0; left:0; bottom:0; background:var(--accent);}
-  .mini-sam .lab{font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--text-dim); width:38px;}
-
-  .mini-dash{width:100%; display:grid; grid-template-columns:1fr 1fr; gap:8px;}
-  .mini-dash .cell{background:var(--ink); border:1px solid var(--line-soft); padding:8px; display:flex; flex-direction:column; justify-content:center; gap:2px;}
-  .mini-dash .cell .v{font-family:'IBM Plex Mono',monospace; font-size:15px; color:var(--accent-2);}
-  .mini-dash .cell .k{font-family:'IBM Plex Mono',monospace; font-size:8px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.05em;}
-
-  .mini-flow{width:100%; display:flex; align-items:center; justify-content:space-between;}
-  .mini-flow .node{width:26px; height:26px; border:2px solid var(--accent); border-radius:50%; flex-shrink:0;}
-  .mini-flow .node.filled{background:var(--accent-2); border-color:var(--accent-2);}
-  .mini-flow .connector{flex:1; height:0; border-top:2px dashed var(--line);}
-
-  .mini-agent{width:100%; display:flex; flex-direction:column; gap:6px;}
-  .mini-agent .step{
-    display:flex; align-items:center; gap:8px;
-    font-family:'IBM Plex Mono', monospace; font-size:9.5px; color:var(--text-dim);
-    padding:6px 9px;
-    background:var(--ink); border:1px solid var(--line-soft);
-  }
-  .mini-agent .step .dot{width:6px; height:6px; border-radius:50%; background:var(--accent); flex-shrink:0;}
-  .mini-agent .step.done .dot{background:var(--accent-2);}
-  .mini-agent .step.done{color:var(--paper);}
-
-  /* ---------- trust band ---------- */
-  .trust{
-    background:var(--paper);
-    color:var(--ink);
-  }
-  .trust-inner{
-    display:grid;
-    grid-template-columns:1.1fr 1fr;
-    gap:60px;
-    align-items:center;
-  }
-  .trust h2{color:var(--ink);}
-  .trust p{
-    font-size:15.5px; line-height:1.7; color:#4a4436;
-    margin:20px 0 0;
-  }
-  .stamp-row{
-    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
-    background:rgba(20,24,28,0.14);
-    border:1px solid rgba(20,24,28,0.14);
-  }
-  .stamp{
-    background:var(--paper);
-    padding:24px 18px;
-    text-align:center;
-  }
-  .stamp .v{
-    font-family:'Big Shoulders Display', sans-serif;
-    font-weight:800; font-size:34px;
-  }
-  .stamp .k{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:#6b6454;
-    margin-top:6px;
-  }
-
-  /* ---------- CTA: bundle ticket ---------- */
-  .ticket-wrap{
-    background:var(--panel);
-    border:1px solid var(--line-soft);
-    display:grid;
-    grid-template-columns:1fr 260px;
-    position:relative;
-  }
-  .ticket-wrap::before{
-    content:"";
-    position:absolute; top:0; bottom:0; left:calc(100% - 260px);
-    border-left:2px dashed var(--line);
-  }
-  .ticket-wrap::after{
-    content:"";
-    position:absolute; left:calc(100% - 260px);
-    top:0; width:0; height:0;
-  }
-  .ticket-main{
-    padding:56px;
-  }
-  .ticket-main .kicker{margin-bottom:16px;}
-  .ticket-main h2{
-    font-size:clamp(30px,3.6vw,46px);
-    color:var(--paper);
-    max-width:520px;
-  }
-  .ticket-main p{
-    color:var(--text-dim); font-size:15.5px; line-height:1.7;
-    max-width:460px; margin:20px 0 30px;
-  }
-  .ticket-stub{
-    padding:56px 40px;
-    display:flex; flex-direction:column; justify-content:center; gap:16px;
-    background:var(--panel-2);
-  }
-  .ticket-stub .row{
-    display:flex; justify-content:space-between;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px; color:var(--text-dim);
-    padding-bottom:12px; border-bottom:1px solid var(--line-soft);
-  }
-  .ticket-stub .row b{color:var(--paper); font-weight:500;}
-  .ticket-stub .btn{width:100%; justify-content:center; margin-top:8px;}
-
-  /* ---------- footer ---------- */
-  footer{
-    border-top:1px solid var(--line-soft);
-    padding:38px 0;
-  }
-  .foot-inner{
-    display:flex; justify-content:space-between; align-items:center;
-    flex-wrap:wrap; gap:16px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px; color:var(--text-dim);
-  }
-  .foot-inner a{text-decoration:none; margin-left:22px; color:var(--text-dim);}
-  .foot-inner a:hover{color:var(--accent);}
-
-  /* ---------- responsive ---------- */
-  @media (max-width:920px){
-    .nav-links{display:none;}
-    .hero-grid{grid-template-columns:1fr;}
-    .trust-inner{grid-template-columns:1fr; gap:34px;}
-    .stations{grid-template-columns:1fr 1fr;}
-    .cap-grid{grid-template-columns:1fr;}
-    .bulletin-row{grid-template-columns:1fr; gap:6px;}
-    .bulletin-row.head{display:none;}
-    .op-no{color:var(--accent);}
-    .ticket-wrap{grid-template-columns:1fr;}
-    .ticket-wrap::before, .ticket-wrap::after{display:none;}
-    .hero-stats{flex-wrap:wrap; row-gap:18px;}
-  }
-  @media (max-width:600px){
-    .stations{grid-template-columns:1fr;}
-    .station::after{display:none;}
-  }
-  @media (prefers-reduced-motion: reduce){
-    *{transition:none !important; animation:none !important;}
-  }
-</style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;1,9..144,400&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
 </head>
 <body>
 
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="index.html" style="text-decoration:none;"><div class="brand"><span class="mark"></span>STITCHLINE</div></a>
-    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="var l=document.querySelector('.nav-links');l.classList.toggle('open');this.setAttribute('aria-expanded',l.classList.contains('open'));">☰</button>
-    <div class="nav-links">
-      <a href="services.html">Services</a>
-      <a href="approach.html">Approach</a>
-      <a href="#ai-roadmap">AI Roadmap</a>
-      <a href="work.html">Work</a>
-      <a href="about.html">About</a>
-      <a href="contact.html" class="btn btn-ghost" style="padding:10px 18px;">Book a Call</a>
-    </div>
-  </div>
-</nav>
-
-<header class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <div class="eyebrow">Data Science &amp; Applied AI for RMG Manufacturers</div>
-      <h1>We find the <span class="accent">7 seconds</span><br>your line is losing.</h1>
-      <p class="sub">Boutique data-science, operations-research, and AI/agentic consulting for garment factories — planning dashboards, line-balancing optimization, and the custom AI/ML tools the sector is now investing in. No generic frameworks. No 40-slide decks that never get implemented.</p>
-      <div class="hero-ctas">
-        <a href="contact.html" class="btn">Book a Discovery Call →</a>
-        <a href="#services" class="btn btn-ghost">See the Bulletin</a>
-      </div>
-      <div class="hero-stats">
-        <div><span class="num mono">hrs→mins</span><span class="lbl">Bulletin Time, Automated</span></div>
-        <div><span class="num mono">34</span><span class="lbl">Ops in the Demo Bulletin</span></div>
-        <div><span class="num mono">2–4 wk</span><span class="lbl">Pilot, Not a Program</span></div>
-      </div>
-    </div>
-
-    <div class="chart-card">
-      <div class="chart-head"><span>Line Balance — 5-Pocket Denim Bottom</span><span class="tag">● Post-Kaizen</span></div>
-      <div class="bars">
-        <div class="target" style="bottom:96px;"></div>
-        <div class="bar-col"><div class="bar" style="height:132px;"></div><span class="op">OP04</span></div>
-        <div class="bar-col"><div class="bar" style="height:70px;"></div><span class="op">OP05</span></div>
-        <div class="bar-col"><div class="bar balanced" style="height:98px;"></div><span class="op">OP06</span></div>
-        <div class="bar-col"><div class="bar" style="height:150px;"></div><span class="op">OP07</span></div>
-        <div class="bar-col"><div class="bar balanced" style="height:94px;"></div><span class="op">OP08</span></div>
-        <div class="bar-col"><div class="bar" style="height:58px;"></div><span class="op">OP09</span></div>
-        <div class="bar-col"><div class="bar balanced" style="height:100px;"></div><span class="op">OP10</span></div>
-      </div>
-      <div class="chart-foot">
-        <span>Target SAM: <b>0.62 min</b></span>
-        <span>Bottleneck OP07: <b>−38% cycle time</b></span>
-      </div>
-    </div>
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="index.html">Stitchline<span>.</span></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="services.html">Services</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="team.html#how-we-work">How we work</a></li>
+      <li><a class="btn" href="contact.html">Contact</a></li>
+    </ul>
   </div>
 </header>
 
-<div class="wrap"><div class="stitch"><div class="dashes"></div><span class="label">Op 01 / 34 — Start of Bulletin</span><div class="dashes"></div></div></div>
+<main>
 
-<section id="services">
-  <div class="wrap">
-    <div class="section-head">
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">Applied AI for RMG factories · Dhaka</span>
+      <h1>Applied AI for garment factories, <em>checked by people who know the floor.</em></h1>
+      <p class="lede">We build AI tools for costing, SAM, line planning and product trends in Bangladesh RMG. Your team signs off on every result.</p>
+      <div class="btn-row">
+        <a class="btn" href="contact.html">Talk to us</a>
+        <a class="btn btn--ghost" href="services.html">See services</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--tight" aria-labelledby="services-h">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">What we offer</span>
+        <h2 id="services-h">Five services, one way of working.</h2>
+      </div>
+      <ul class="svc-list reveal">
+        <li><a href="services.html#pre-costing"><span class="num">01</span><h3>AI pre-costing</h3><p>Tech pack in, draft quote out.</p></a></li>
+        <li><a href="services.html#sam-video"><span class="num">02</span><h3>SAM from video</h3><p>Operation times measured from line video.</p></a></li>
+        <li><a href="services.html#line-balancing"><span class="num">03</span><h3>Line balancing</h3><p>Rebalance the line around the real bottleneck.</p></a></li>
+        <li><a href="services.html#planning"><span class="num">04</span><h3>Planning dashboards</h3><p>One morning view of the plan, from sheets you already keep.</p></a></li>
+        <li><a href="services.html#trend-intelligence"><span class="num">05</span><h3>Product trend intelligence</h3><p>Buyer trend research for PD&amp;D teams, drafted by AI.</p></a></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section section--alt" aria-labelledby="how-h">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">How we work</span>
+        <h2 id="how-h">Agents draft. <em>People sign off.</em></h2>
+      </div>
+      <ol class="steps reveal">
+        <li><span class="num">01</span><h3>AI drafts</h3><p>It reads your own files and drafts the quote, the times or the report.</p></li>
+        <li><span class="num">02</span><h3>Your team checks</h3><p>The draft is compared with your history. Anything unusual is flagged.</p></li>
+        <li><span class="num">03</span><h3>You approve</h3><p>Nothing goes to a buyer or onto the floor until you approve it.</p></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="team-h">
+    <div class="wrap split reveal">
       <div>
-        <span class="kicker">What We Work On</span>
-        <h2>The Operation<br>Bulletin</h2>
+        <span class="eyebrow">Who we are</span>
+        <h2 id="team-h">AI science meets the factory floor.</h2>
       </div>
-      <p>Stated the way your production floor already speaks it — not repackaged as "strategy pillars." Four service lines, four measurable outcomes.</p>
-    </div>
-
-    <div class="bulletin">
-      <div class="bulletin-row head">
-        <span>Op No</span><span>Operation</span><span>Method</span><span>Outcome</span>
-      </div>
-      <div class="bulletin-row">
-        <span class="op-no">01</span>
-        <span class="op-name">Planning Dashboards<span>Live plan-vs-order, buyer mix, and carryover tracking your PMs actually open daily.</span></span>
-        <span class="op-method">HTML/Chart.js, your data</span>
-        <span class="op-outcome">One <b>daily</b> source of truth</span>
-      </div>
-      <div class="bulletin-row">
-        <span class="op-no">02</span>
-        <span class="op-name">Bespoke AI &amp; Agentic Solutions<span>Custom AI/ML and agentic tools scoped to one capability at a time — computer-vision QC, demand sensing, generative design — not an off-the-shelf platform.</span></span>
-        <span class="op-method">Scoped pilot → production build</span>
-        <span class="op-outcome">Roadmap idea <b>→ running tool</b></span>
-      </div>
-      <div class="bulletin-row">
-        <span class="op-no">03</span>
-        <span class="op-name">IE Automation Tools<span>LLM layer for fuzzy judgment, deterministic engine for the math — bulletins and thread consumption, automated.</span></span>
-        <span class="op-method">Two-layer automation build</span>
-        <span class="op-outcome">Bulletin time <b>hrs → mins</b></span>
-      </div>
-      <div class="bulletin-row">
-        <span class="op-no">04</span>
-        <span class="op-name">Line Balancing &amp; Layout<span>Rebalance operator allocation and machine layout around your actual bottleneck ops — SAM verification built into the data collection.</span></span>
-        <span class="op-method">OR optimization + WIP analysis</span>
-        <span class="op-outcome">Target <b>+15–25 eff. pts</b></span>
-      </div>
-    </div>
-    <div style="margin-top:22px; text-align:right;">
-      <a href="services.html" class="btn btn-ghost">View Full Service Details →</a>
-    </div>
-  </div>
-</section>
-
-<div class="wrap"><div class="stitch"><div class="dashes"></div><span class="label">Engagement Flow</span><div class="dashes"></div></div></div>
-
-<section id="approach">
-  <div class="wrap">
-    <div class="section-head">
       <div>
-        <span class="kicker">How We Work</span>
-        <h2>Four Stations,<br>One Line</h2>
-      </div>
-      <p>A real engagement, not a workshop series. Each station has to clear before the next one starts moving.</p>
-    </div>
-    <div class="stations">
-      <div class="station">
-        <div class="st-no mono">01</div>
-        <h3>Pull the Data</h3>
-        <p>Production plans, bulletins, WIP and buyer-mix reports — plus an on-site floor walk timed with our Bangladesh visits. Nothing gets recommended before the data's in.</p>
-      </div>
-      <div class="station">
-        <div class="st-no mono">02</div>
-        <h3>Diagnose the Bottleneck</h3>
-        <p>Line balance, SAM accuracy, and planning gaps quantified against your own historical output — not industry averages.</p>
-      </div>
-      <div class="station">
-        <div class="st-no mono">03</div>
-        <h3>Build &amp; Deploy</h3>
-        <p>Dashboards, automation tools, and rebalance plans — built remotely against your data, deployed and tested with your supervisors.</p>
-      </div>
-      <div class="station">
-        <div class="st-no mono">04</div>
-        <h3>Sustain the Gain</h3>
-        <p>30/60/90-day efficiency tracking so the improvement survives past the week we leave — with numbers, not a report nobody opens.</p>
+        <p class="lede">Three people, three disciplines: applied AI, fifteen years of lean, IE and planning, and industrial engineering research at BUET.</p>
+        <div class="team-strip" style="margin-top:2rem">
+          <div class="faces">
+            <img src="assets/team/redwan-rashid.jpg" alt="Redwan Rashid" width="76" height="76">
+            <img src="assets/team/jahurul-islam.jpg" alt="Jahurul Islam" width="76" height="76">
+            <img src="assets/team/ferdous-sarwar.jpg" alt="Prof. Ferdous Sarwar" width="76" height="76">
+          </div>
+          <a class="btn btn--ghost" href="team.html">Meet the team</a>
+        </div>
       </div>
     </div>
-    <div style="margin-top:22px; text-align:right;">
-      <a href="approach.html" class="btn btn-ghost">See the Full Approach →</a>
-    </div>
-  </div>
-</section>
+  </section>
 
-<div class="wrap"><div class="stitch"><div class="dashes"></div><span class="label">Where AI Investment Is Going</span><div class="dashes"></div></div></div>
+  <section class="section contact-band" aria-labelledby="contact-h">
+    <div class="wrap">
+      <h2 id="contact-h">Bring us one style or one line. <em>We'll show you what AI can do with it.</em></h2>
+      <p style="margin-top:1rem">Message us on WhatsApp or send an email. We're based in Dhaka.</p>
+      <div class="btn-row">
+        <a class="btn" href="https://wa.me/8801712775303">WhatsApp us</a>
+        <a class="btn btn--ghost" href="mailto:stitchline.io@gmail.com">stitchline.io@gmail.com</a>
+      </div>
+    </div>
+  </section>
 
-<section id="ai-roadmap">
+</main>
+
+<footer class="footer">
   <div class="wrap">
-    <div class="section-head">
-      <div>
-        <span class="kicker">Sector Trend</span>
-        <h2>Every Factory's<br>Tech Roadmap</h2>
-      </div>
-      <p>Across the RMG sector, factories are increasingly mapping "Now → Next → Future" technology roadmaps across design, planning, manufacturing and post-cycle experience. We build the <b style="color:var(--accent);">Next</b> column — the part that turns a roadmap slide into a tool running on the floor.</p>
-    </div>
-
-    <div class="ladder-legend">
-      <span><i style="background:var(--panel-2); border:1px solid var(--line);"></i>Now — manual / spreadsheet</span>
-      <span><i style="background:var(--accent);"></i>Next — where we build today</span>
-      <span><i style="background:var(--panel-2); border:1px solid var(--line);"></i>Future — full autonomy</span>
-    </div>
-
-    <div class="ladder">
-      <div class="ladder-row head">
-        <div>Capability Area</div>
-        <div class="now-col">Now</div>
-        <div class="next-col">Next</div>
-        <div class="future-col">Future</div>
-      </div>
-      <div class="ladder-row">
-        <div class="ladder-cap"><span class="pillar-tag on">M</span><span class="name">Line Balancing</span></div>
-        <div class="ladder-cell">Manual, based on supervisor experience and skill inventory.</div>
-        <div class="ladder-cell next-col">AI/ML balancing using operator skill matrix, SAM, and shift history.</div>
-        <div class="ladder-cell">Self-tuning, re-optimizing every shift against live efficiency data.</div>
-      </div>
-      <div class="ladder-row">
-        <div class="ladder-cap"><span class="pillar-tag on">M</span><span class="name">Defect &amp; Measurement QC</span></div>
-        <div class="ladder-cell">Manual audit with digital data capture.</div>
-        <div class="ladder-cell next-col">Computer-vision defect and measurement detection at critical operations.</div>
-        <div class="ladder-cell">Predictive defect risk per style/operator with proactive coaching alerts.</div>
-      </div>
-      <div class="ladder-row">
-        <div class="ladder-cap"><span class="pillar-tag on">P</span><span class="name">Demand &amp; Capacity Planning</span></div>
-        <div class="ladder-cell">Excel-based forecasting aligned to buyer indicative plans.</div>
-        <div class="ladder-cell next-col">AI demand sensing and capacity allocation using order-book signals.</div>
-        <div class="ladder-cell">Real-time adaptive re-planning across lines when disruptions occur.</div>
-      </div>
-      <div class="ladder-row">
-        <div class="ladder-cap"><span class="pillar-tag on">D</span><span class="name">Design &amp; Trend Intelligence</span></div>
-        <div class="ladder-cell">Manual mood boards and tech packs in Excel/PDF.</div>
-        <div class="ladder-cell next-col">AI-assisted CAD and trend forecasting mapped to factory capability.</div>
-        <div class="ladder-cell">Generative design co-pilot producing buyer-aligned style variants.</div>
-      </div>
-      <div class="ladder-row">
-        <div class="ladder-cap"><span class="pillar-tag on">X</span><span class="name">Buyer Feedback &amp; Compliance</span></div>
-        <div class="ladder-cell">Email and meeting-based tracking, manual complaint categorization.</div>
-        <div class="ladder-cell next-col">Centralized feedback logging with AI-assisted triage and chatbot support.</div>
-        <div class="ladder-cell">Predictive sentiment and quality monitoring across the buyer base.</div>
-      </div>
-    </div>
-
-    <div class="ladder-note">
-      <span class="pillar-tag on" style="width:26px;height:26px;">i</span>
-      <span>We group AI/agentic work the same way most factories start scoping it internally — by where it sits in the operation: <b>Design</b>, <b>Planning</b>, <b>Manufacturing</b>, and post-cycle E<b>x</b>perience.</span>
-    </div>
-  </div>
-</section>
-
-<div class="wrap"><div class="stitch"><div class="dashes"></div><span class="label">Field-Tested Tools</span><div class="dashes"></div></div></div>
-
-<section id="capabilities">
-  <div class="wrap">
-    <div class="section-head">
-      <div>
-        <span class="kicker">Built In-House</span>
-        <h2>Capabilities,<br>Not Claims</h2>
-      </div>
-      <p>No client logos yet to point to publicly — so here's what we've actually built, live tools you can ask to see running.</p>
-    </div>
-    <div class="cap-grid">
-      <div class="cap-card">
-        <div class="cap-tag">Prototype</div>
-        <div class="cap-visual">
-          <div class="mini-sam">
-            <div class="row"><span class="lab">OP07</span><div class="track"><div class="fill" style="width:88%;"></div></div></div>
-            <div class="row"><span class="lab">OP08</span><div class="track"><div class="fill" style="width:54%;"></div></div></div>
-            <div class="row"><span class="lab">OP09</span><div class="track"><div class="fill" style="width:71%;"></div></div></div>
-            <div class="row"><span class="lab">OP10</span><div class="track"><div class="fill" style="width:63%;"></div></div></div>
-          </div>
-        </div>
-        <h3>IE Automation Suite</h3>
-        <p>Clickable operation bulletin for a 34-op denim bottom, with a two-layer engine: LLM for stitch-type judgment, formulas for the math.</p>
-      </div>
-      <div class="cap-card">
-        <div class="cap-tag">Prototype</div>
-        <div class="cap-visual">
-          <div class="mini-dash">
-            <div class="cell"><span class="v">84%</span><span class="k">Line Eff.</span></div>
-            <div class="cell"><span class="v">6</span><span class="k">Buyers Active</span></div>
-            <div class="cell"><span class="v">92%</span><span class="k">Plan vs Order</span></div>
-            <div class="cell"><span class="v">3</span><span class="k">Carryover</span></div>
-          </div>
-        </div>
-        <h3>Planning Dashboard</h3>
-        <p>Multi-tab overview, buyer mix, and a "one number to watch" banner built from real sewing-line plan data.</p>
-      </div>
-      <div class="cap-card">
-        <div class="cap-tag">Proposal Deck</div>
-        <div class="cap-visual">
-          <div class="mini-flow">
-            <div class="node filled"></div><div class="connector"></div>
-            <div class="node filled"></div><div class="connector"></div>
-            <div class="node"></div><div class="connector"></div>
-            <div class="node"></div>
-          </div>
-        </div>
-        <h3>AI/Automation Roadmap</h3>
-        <p>25 proposals across design, planning, manufacturing and post-cycle, sorted into eight technology tracks — from computer vision QC to digital twins.</p>
-      </div>
-      <div class="cap-card">
-        <div class="cap-tag">Pilot Build</div>
-        <div class="cap-visual">
-          <div class="mini-agent">
-            <div class="step done"><span class="dot"></span>Observe: pull live line + buyer data</div>
-            <div class="step done"><span class="dot"></span>Decide: flag bottleneck, draft fix</div>
-            <div class="step"><span class="dot"></span>Act: push update, log outcome</div>
-          </div>
-        </div>
-        <h3>Agentic AI Pilots</h3>
-        <p>Small, scoped agentic tools — an agent that watches line data and drafts a rebalance, or triages buyer feedback into your QA queue.</p>
-      </div>
-    </div>
-    <div style="margin-top:22px; text-align:right;">
-      <a href="work.html" class="btn btn-ghost">See All Capabilities →</a>
-    </div>
-  </div>
-</section>
-
-<section class="trust" id="about">
-  <div class="wrap trust-inner">
     <div>
-      <span class="kicker" style="color:#b5601a;">Who's Behind the Bulletin</span>
-      <h2>Data First,<br>Decks Second</h2>
-      <p>Stitchline is run by a data scientist and operations researcher who builds the tools RMG factories are asking for — planning dashboards, line-balancing optimization, and the AI/ML systems on every factory's tech roadmap. Every tool shown here was built and running before it earned a mention on this site.</p>
+      <a class="logo" href="index.html">Stitchline<span>.</span></a>
+      <p>Applied AI for garment factories in Bangladesh.</p>
     </div>
-    <div class="stamp-row">
-      <div class="stamp"><div class="v mono">DS+OR</div><div class="k">Data Science &amp; Ops Research</div></div>
-      <div class="stamp"><div class="v mono">4</div><div class="k">Working Prototypes, Live Demo</div></div>
-      <div class="stamp"><div class="v mono">AI/ML</div><div class="k">Built In-House, Not Resold</div></div>
-    </div>
-  </div>
-  <div class="wrap" style="margin-top:22px; text-align:right;">
-    <a href="about.html" class="btn btn-ghost" style="border-color:rgba(20,24,28,0.3); color:var(--ink);">Read the Full Story →</a>
-  </div>
-</section>
-
-<section id="contact">
-  <div class="wrap">
-    <div class="ticket-wrap">
-      <div class="ticket-main">
-        <span class="kicker">Cut Ticket #001</span>
-        <h2>Ready to see<br>your own bulletin?</h2>
-        <p>A 30-minute call is enough to know if there's a real bottleneck worth fixing. No sales deck — bring your last efficiency report and we'll go through it together.</p>
-        <a href="contact.html" class="btn">Book a Discovery Call →</a>
-      </div>
-      <div class="ticket-stub">
-        <div class="row"><span>Duration</span><b>30 min</b></div>
-        <div class="row"><span>Format</span><b>Video Call</b></div>
-        <div class="row"><span>Cost</span><b>No charge</b></div>
-        <div class="row" style="border-bottom:none;"><span>Contact</span><b>hello@stitchline.co</b></div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap foot-inner">
-    <span>© 2026 Stitchline Consulting — Dhaka, Bangladesh</span>
-    <div>
-      <a href="mailto:hello@stitchline.co">Email</a>
-      <a href="contact.html">Book a Call</a>
-    </div>
+    <ul>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="team.html#how-we-work">How we work</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <ul>
+      <li><a href="mailto:stitchline.io@gmail.com">stitchline.io@gmail.com</a></li>
+      <li><a href="https://wa.me/8801712775303">WhatsApp +880 1712 775303</a></li>
+      <li>Dhaka, Bangladesh</li>
+    </ul>
+    <p class="legal">© 2026 Stitchline</p>
   </div>
 </footer>
 
