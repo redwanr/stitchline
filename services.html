@@ -1,887 +1,210 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="Planning dashboards, bespoke AI/agentic solutions, IE automation, and line-balancing optimization for garment manufacturers.">
-<title>Services — Stitchline</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect x=%276%27 y=%276%27 width=%2720%27 height=%2720%27 fill=%27none%27 stroke=%27%23e8871e%27 stroke-width=%273%27 transform=%27rotate(45 16 16)%27/%3E%3C/svg%3E">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Services · Stitchline</title>
+<meta name="description" content="Five services for Bangladesh RMG factories: AI pre-costing, SAM from video, line balancing, planning dashboards and product trend intelligence.">
+<meta property="og:title" content="Services · Stitchline">
+<meta property="og:description" content="AI pre-costing, SAM from video, line balancing, planning dashboards and product trend intelligence for RMG factories.">
+<meta property="og:type" content="website">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --ink:#14181c;
-    --panel:#1b2129;
-    --panel-2:#222932;
-    --paper:#ede7da;
-    --paper-dim:#ddd5c2;
-    --accent:#e8871e;
-    --accent-2:#4fa88f;
-    --text:#edeff2;
-    --text-dim:#8b95a1;
-    --line:rgba(237,239,242,0.14);
-    --line-soft:rgba(237,239,242,0.08);
-  }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--ink);
-    color:var(--text);
-    font-family:'IBM Plex Sans', sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  h1,h2,h3{
-    font-family:'Big Shoulders Display', sans-serif;
-    font-weight:800;
-    text-transform:uppercase;
-    letter-spacing:0.01em;
-    margin:0;
-  }
-  .mono{font-family:'IBM Plex Mono', monospace;}
-  a{color:inherit;}
-  .wrap{max-width:1180px; margin:0 auto; padding:0 32px;}
-  img,svg{display:block; max-width:100%;}
-
-  /* ---------- stitch divider ---------- */
-  .stitch{
-    display:flex; align-items:center; gap:10px;
-    padding:14px 0;
-  }
-  .stitch .dashes{
-    flex:1; height:0;
-    border-top:2px dashed var(--line);
-  }
-  .stitch .label{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    letter-spacing:0.18em;
-    color:var(--text-dim);
-    white-space:nowrap;
-    text-transform:uppercase;
-  }
-
-  /* ---------- nav ---------- */
-  .nav{
-    position:sticky; top:0; z-index:50;
-    background:rgba(20,24,28,0.92);
-    backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--line-soft);
-  }
-  .nav-inner{
-    display:flex; align-items:center; justify-content:space-between;
-    padding:18px 32px;
-    max-width:1180px; margin:0 auto;
-  }
-  .brand{
-    display:flex; align-items:center; gap:10px;
-    font-family:'Big Shoulders Display', sans-serif;
-    font-weight:800; font-size:22px; letter-spacing:0.02em;
-  }
-  .brand .mark{
-    width:22px; height:22px;
-    border:2px solid var(--accent);
-    position:relative;
-    transform:rotate(45deg);
-  }
-  .brand .mark::after{
-    content:"";
-    position:absolute; inset:5px;
-    border-top:2px dashed var(--accent);
-  }
-  .nav-links{
-    display:flex; align-items:center; gap:34px;
-    font-size:14px;
-    color:var(--text-dim);
-  }
-  .nav-links a{
-    text-decoration:none;
-    transition:color .15s ease;
-  }
-  .nav-links a:hover{color:var(--text);}
-  .btn{
-    display:inline-flex; align-items:center; gap:8px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:13px; letter-spacing:0.04em; text-transform:uppercase;
-    padding:12px 20px;
-    background:var(--accent);
-    color:#14181c;
-    text-decoration:none;
-    border:none;
-    cursor:pointer;
-    font-weight:500;
-    transition:transform .15s ease, background .15s ease;
-  }
-  .btn:hover{background:#f49a3a; transform:translateY(-1px);}
-  .btn-ghost{
-    background:transparent;
-    color:var(--text);
-    border:1px solid var(--line);
-  }
-  .btn-ghost:hover{border-color:var(--accent); color:var(--accent); background:transparent;}
-  .nav-toggle{
-    display:none;
-    background:none;
-    border:1px solid var(--line);
-    color:var(--text);
-    font-size:18px; line-height:1;
-    padding:8px 12px;
-    cursor:pointer;
-  }
-  @media (max-width:920px){
-    .nav-toggle{display:block;}
-    .nav-links.open{
-      display:flex; flex-direction:column; align-items:flex-start; gap:20px;
-      position:absolute; top:100%; left:0; right:0;
-      background:var(--ink);
-      border-bottom:1px solid var(--line-soft);
-      padding:22px 32px;
-    }
-  }
-
-  /* ---------- hero ---------- */
-  .hero{
-    padding:88px 0 60px;
-    position:relative;
-    overflow:hidden;
-  }
-  .hero-grid{
-    display:grid;
-    grid-template-columns:1.05fr 0.95fr;
-    gap:56px;
-    align-items:center;
-  }
-  .eyebrow{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px; letter-spacing:0.2em; text-transform:uppercase;
-    color:var(--accent);
-    display:flex; align-items:center; gap:10px;
-    margin-bottom:20px;
-  }
-  .eyebrow::before{
-    content:"";
-    width:22px; height:1px;
-    background:var(--accent);
-  }
-  .hero h1{
-    font-size:clamp(40px,5vw,64px);
-    line-height:0.98;
-    color:var(--paper);
-  }
-  .hero h1 .accent{color:var(--accent);}
-  .hero p.sub{
-    font-size:17px;
-    line-height:1.6;
-    color:var(--text-dim);
-    max-width:480px;
-    margin:24px 0 34px;
-  }
-  .hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
-
-  .hero-stats{
-    display:flex; gap:34px;
-    margin-top:46px;
-    padding-top:26px;
-    border-top:1px solid var(--line-soft);
-  }
-  .hero-stats div{display:flex; flex-direction:column; gap:4px;}
-  .hero-stats .num{
-    font-family:'Big Shoulders Display', sans-serif;
-    font-weight:700; font-size:30px; color:var(--paper);
-  }
-  .hero-stats .lbl{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim);
-  }
-
-  /* ---------- line balancing chart (hero visual) ---------- */
-  .chart-card{
-    background:var(--panel);
-    border:1px solid var(--line-soft);
-    padding:22px 22px 18px;
-  }
-  .chart-card .chart-head{
-    display:flex; justify-content:space-between; align-items:baseline;
-    margin-bottom:16px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px; letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim);
-  }
-  .chart-card .chart-head .tag{
-    color:var(--accent-2);
-  }
-  .bars{
-    display:flex; align-items:flex-end; gap:10px;
-    height:180px;
-    position:relative;
-  }
-  .bars .target{
-    position:absolute; left:0; right:0;
-    border-top:2px dashed var(--text-dim);
-    opacity:.6;
-  }
-  .bar-col{flex:1; display:flex; flex-direction:column; align-items:center; gap:8px;}
-  .bar{
-    width:100%;
-    background:var(--panel-2);
-    border-top:3px solid var(--accent);
-    position:relative;
-  }
-  .bar.balanced{border-top-color:var(--accent-2);}
-  .bar-col .op{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10px; color:var(--text-dim);
-  }
-  .chart-foot{
-    display:flex; justify-content:space-between;
-    margin-top:14px; padding-top:14px;
-    border-top:1px solid var(--line-soft);
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px; color:var(--text-dim);
-  }
-  .chart-foot b{color:var(--paper); font-weight:500;}
-
-  /* ---------- section shell ---------- */
-  section{padding:78px 0;}
-  .section-head{
-    display:flex; justify-content:space-between; align-items:flex-end;
-    gap:20px; margin-bottom:44px; flex-wrap:wrap;
-  }
-  .section-head h2{
-    font-size:clamp(28px,3.4vw,42px);
-    color:var(--paper);
-  }
-  .section-head p{
-    color:var(--text-dim);
-    max-width:420px;
-    line-height:1.6;
-    font-size:15px;
-  }
-  .kicker{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px; letter-spacing:0.18em; text-transform:uppercase;
-    color:var(--accent); margin-bottom:10px; display:block;
-  }
-
-  /* ---------- operation bulletin (services) ---------- */
-  .bulletin{
-    background:var(--panel);
-    border:1px solid var(--line-soft);
-  }
-  .bulletin-row{
-    display:grid;
-    grid-template-columns:70px 1.4fr 1fr 1fr;
-    gap:20px;
-    padding:22px 26px;
-    border-bottom:1px solid var(--line-soft);
-    align-items:center;
-    transition:background .15s ease;
-  }
-  .bulletin-row:last-child{border-bottom:none;}
-  .bulletin-row:hover{background:var(--panel-2);}
-  .bulletin-row.head{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
-    color:var(--text-dim);
-    padding:14px 26px;
-  }
-  .op-no{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:13px; color:var(--accent);
-  }
-  .op-name{
-    font-size:17px; font-weight:600; color:var(--paper);
-  }
-  .op-name span{
-    display:block; font-size:13px; font-weight:400; color:var(--text-dim); margin-top:4px; line-height:1.5;
-  }
-  .op-method, .op-outcome{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12.5px; color:var(--text-dim); line-height:1.6;
-  }
-  .op-outcome b{color:var(--accent-2); font-weight:500;}
-
-  /* ---------- pillar tags ---------- */
-  .pillar-tag{
-    display:inline-flex; align-items:center; justify-content:center;
-    width:22px; height:22px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10px; font-weight:500;
-    border:1px solid var(--line);
-    color:var(--text-dim);
-    flex-shrink:0;
-  }
-  .pillar-tag.on{
-    border-color:var(--accent-2);
-    color:var(--accent-2);
-  }
-
-  /* ---------- AI maturity ladder ---------- */
-  .ladder-legend{
-    display:flex; gap:22px; margin-bottom:26px; flex-wrap:wrap;
-    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--text-dim);
-  }
-  .ladder-legend span{display:flex; align-items:center; gap:8px;}
-  .ladder-legend i{width:10px; height:10px; display:inline-block;}
-  .ladder{
-    background:var(--panel);
-    border:1px solid var(--line-soft);
-  }
-  .ladder-row{
-    display:grid;
-    grid-template-columns:210px 1fr 1fr 1fr;
-    border-bottom:1px solid var(--line-soft);
-  }
-  .ladder-row:last-child{border-bottom:none;}
-  .ladder-row.head > div{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;
-    color:var(--text-dim);
-    padding:14px 20px;
-  }
-  .ladder-row.head .now-col{color:var(--text-dim);}
-  .ladder-row.head .next-col{color:var(--accent);}
-  .ladder-row.head .future-col{color:var(--text-dim);}
-  .ladder-cap{
-    padding:20px 20px 20px 22px;
-    display:flex; align-items:center; gap:10px;
-    border-right:1px solid var(--line-soft);
-  }
-  .ladder-cap .name{font-size:14.5px; font-weight:600; color:var(--paper); line-height:1.4;}
-  .ladder-cell{
-    padding:18px 20px;
-    font-size:12.5px; line-height:1.6; color:var(--text-dim);
-    border-right:1px solid var(--line-soft);
-  }
-  .ladder-cell:last-child{border-right:none;}
-  .ladder-cell.next-col{
-    background:rgba(232,135,30,0.07);
-    color:var(--paper);
-    position:relative;
-  }
-  .ladder-note{
-    margin-top:22px;
-    padding:18px 22px;
-    border:1px dashed var(--line);
-    display:flex; align-items:center; gap:14px;
-    font-size:13px; color:var(--text-dim); line-height:1.6;
-  }
-  .ladder-note b{color:var(--accent); font-weight:500;}
-
-  /* ---------- approach (line stations) ---------- */
-  .stations{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:1px;
-    background:var(--line-soft);
-    border:1px solid var(--line-soft);
-  }
-  .station{
-    background:var(--ink);
-    padding:30px 26px;
-    position:relative;
-  }
-  .station .st-no{
-    font-family:'Big Shoulders Display', sans-serif;
-    font-size:44px; font-weight:800;
-    color:var(--panel-2);
-    -webkit-text-stroke:1px var(--line);
-    line-height:1;
-    margin-bottom:18px;
-  }
-  .station h3{
-    font-size:19px; color:var(--paper); margin-bottom:10px;
-    text-transform:none; letter-spacing:0; font-weight:700;
-  }
-  .station p{
-    font-size:13.5px; color:var(--text-dim); line-height:1.6; margin:0;
-  }
-  .station::after{
-    content:"";
-    position:absolute; right:0; top:30%; bottom:30%;
-    border-right:2px dashed var(--line);
-  }
-  .station:last-child::after{display:none;}
-
-  /* ---------- capabilities ---------- */
-  .cap-grid{
-    display:grid;
-    grid-template-columns:repeat(4,1fr);
-    gap:22px;
-  }
-  @media (max-width:1080px){
-    .cap-grid{grid-template-columns:repeat(2,1fr);}
-  }
-  .cap-card{
-    background:var(--panel);
-    border:1px solid var(--line-soft);
-    padding:26px;
-    display:flex; flex-direction:column; gap:18px;
-  }
-  .cap-card .cap-tag{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10.5px; letter-spacing:0.1em; text-transform:uppercase;
-    color:var(--accent-2);
-    border:1px solid var(--accent-2);
-    align-self:flex-start;
-    padding:3px 8px;
-  }
-  .cap-card h3{
-    font-size:20px; color:var(--paper); text-transform:none; letter-spacing:0;
-  }
-  .cap-card p{
-    font-size:13.5px; color:var(--text-dim); line-height:1.6; margin:0;
-  }
-  .cap-visual{
-    height:110px;
-    background:var(--panel-2);
-    border:1px solid var(--line-soft);
-    display:flex; align-items:center; justify-content:center;
-    padding:14px;
-  }
-  /* mini visuals */
-  .mini-sam{width:100%; display:flex; flex-direction:column; gap:6px;}
-  .mini-sam .row{display:flex; align-items:center; gap:8px;}
-  .mini-sam .track{flex:1; height:6px; background:var(--ink); position:relative;}
-  .mini-sam .fill{position:absolute; top:0; left:0; bottom:0; background:var(--accent);}
-  .mini-sam .lab{font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--text-dim); width:38px;}
-
-  .mini-dash{width:100%; display:grid; grid-template-columns:1fr 1fr; gap:8px;}
-  .mini-dash .cell{background:var(--ink); border:1px solid var(--line-soft); padding:8px; display:flex; flex-direction:column; justify-content:center; gap:2px;}
-  .mini-dash .cell .v{font-family:'IBM Plex Mono',monospace; font-size:15px; color:var(--accent-2);}
-  .mini-dash .cell .k{font-family:'IBM Plex Mono',monospace; font-size:8px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.05em;}
-
-  .mini-flow{width:100%; display:flex; align-items:center; justify-content:space-between;}
-  .mini-flow .node{width:26px; height:26px; border:2px solid var(--accent); border-radius:50%; flex-shrink:0;}
-  .mini-flow .node.filled{background:var(--accent-2); border-color:var(--accent-2);}
-  .mini-flow .connector{flex:1; height:0; border-top:2px dashed var(--line);}
-
-  .mini-agent{width:100%; display:flex; flex-direction:column; gap:6px;}
-  .mini-agent .step{
-    display:flex; align-items:center; gap:8px;
-    font-family:'IBM Plex Mono', monospace; font-size:9.5px; color:var(--text-dim);
-    padding:6px 9px;
-    background:var(--ink); border:1px solid var(--line-soft);
-  }
-  .mini-agent .step .dot{width:6px; height:6px; border-radius:50%; background:var(--accent); flex-shrink:0;}
-  .mini-agent .step.done .dot{background:var(--accent-2);}
-  .mini-agent .step.done{color:var(--paper);}
-
-  /* ---------- trust band ---------- */
-  .trust{
-    background:var(--paper);
-    color:var(--ink);
-  }
-  .trust-inner{
-    display:grid;
-    grid-template-columns:1.1fr 1fr;
-    gap:60px;
-    align-items:center;
-  }
-  .trust h2{color:var(--ink);}
-  .trust p{
-    font-size:15.5px; line-height:1.7; color:#4a4436;
-    margin:20px 0 0;
-  }
-  .stamp-row{
-    display:grid; grid-template-columns:repeat(3,1fr); gap:1px;
-    background:rgba(20,24,28,0.14);
-    border:1px solid rgba(20,24,28,0.14);
-  }
-  .stamp{
-    background:var(--paper);
-    padding:24px 18px;
-    text-align:center;
-  }
-  .stamp .v{
-    font-family:'Big Shoulders Display', sans-serif;
-    font-weight:800; font-size:34px;
-  }
-  .stamp .k{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10.5px; text-transform:uppercase; letter-spacing:.08em; color:#6b6454;
-    margin-top:6px;
-  }
-
-  /* ---------- CTA: bundle ticket ---------- */
-  .ticket-wrap{
-    background:var(--panel);
-    border:1px solid var(--line-soft);
-    display:grid;
-    grid-template-columns:1fr 260px;
-    position:relative;
-  }
-  .ticket-wrap::before{
-    content:"";
-    position:absolute; top:0; bottom:0; left:calc(100% - 260px);
-    border-left:2px dashed var(--line);
-  }
-  .ticket-wrap::after{
-    content:"";
-    position:absolute; left:calc(100% - 260px);
-    top:0; width:0; height:0;
-  }
-  .ticket-main{
-    padding:56px;
-  }
-  .ticket-main .kicker{margin-bottom:16px;}
-  .ticket-main h2{
-    font-size:clamp(30px,3.6vw,46px);
-    color:var(--paper);
-    max-width:520px;
-  }
-  .ticket-main p{
-    color:var(--text-dim); font-size:15.5px; line-height:1.7;
-    max-width:460px; margin:20px 0 30px;
-  }
-  .ticket-stub{
-    padding:56px 40px;
-    display:flex; flex-direction:column; justify-content:center; gap:16px;
-    background:var(--panel-2);
-  }
-  .ticket-stub .row{
-    display:flex; justify-content:space-between;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px; color:var(--text-dim);
-    padding-bottom:12px; border-bottom:1px solid var(--line-soft);
-  }
-  .ticket-stub .row b{color:var(--paper); font-weight:500;}
-  .ticket-stub .btn{width:100%; justify-content:center; margin-top:8px;}
-
-  /* ---------- footer ---------- */
-  footer{
-    border-top:1px solid var(--line-soft);
-    padding:38px 0;
-  }
-  .foot-inner{
-    display:flex; justify-content:space-between; align-items:center;
-    flex-wrap:wrap; gap:16px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12px; color:var(--text-dim);
-  }
-  .foot-inner a{text-decoration:none; margin-left:22px; color:var(--text-dim);}
-  .foot-inner a:hover{color:var(--accent);}
-
-  /* ---------- responsive ---------- */
-  @media (max-width:920px){
-    .nav-links{display:none;}
-    .hero-grid{grid-template-columns:1fr;}
-    .trust-inner{grid-template-columns:1fr; gap:34px;}
-    .stations{grid-template-columns:1fr 1fr;}
-    .cap-grid{grid-template-columns:1fr;}
-    .bulletin-row{grid-template-columns:1fr; gap:6px;}
-    .bulletin-row.head{display:none;}
-    .op-no{color:var(--accent);}
-    .ticket-wrap{grid-template-columns:1fr;}
-    .ticket-wrap::before, .ticket-wrap::after{display:none;}
-    .hero-stats{flex-wrap:wrap; row-gap:18px;}
-  }
-  @media (max-width:600px){
-    .stations{grid-template-columns:1fr;}
-    .station::after{display:none;}
-  }
-  @media (prefers-reduced-motion: reduce){
-    *{transition:none !important; animation:none !important;}
-  }
-
-  /* ---------- inner page header ---------- */
-  .inner-hero{
-    padding:64px 0 20px;
-  }
-  .inner-hero .intro{
-    font-size:16.5px; line-height:1.65; color:var(--text-dim);
-    max-width:600px; margin-top:20px;
-  }
-  .inner-hero h1{
-    font-size:clamp(36px,5vw,56px);
-    line-height:1;
-    color:var(--paper);
-    max-width:760px;
-  }
-  .crumb{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px; letter-spacing:0.1em; text-transform:uppercase;
-    color:var(--text-dim);
-    display:flex; align-items:center; gap:8px;
-    margin-bottom:22px;
-  }
-  .crumb a{text-decoration:none; color:var(--text-dim);}
-  .crumb a:hover{color:var(--accent);}
-  .crumb .sep{opacity:.5;}
-
-  /* ---------- expanded service block (Services page) ---------- */
-  .svc-block{
-    border-top:1px solid var(--line-soft);
-    padding:44px 0;
-    display:grid;
-    grid-template-columns:70px 1fr 260px;
-    gap:34px;
-  }
-  .svc-block:last-of-type{border-bottom:1px solid var(--line-soft);}
-  .svc-no{
-    font-family:'Big Shoulders Display', sans-serif;
-    font-weight:800; font-size:15px; color:var(--accent);
-  }
-  .svc-block h3{
-    font-size:24px; color:var(--paper); text-transform:none; letter-spacing:0;
-    margin-bottom:12px;
-  }
-  .svc-block p{font-size:15px; line-height:1.7; color:var(--text-dim); margin:0 0 18px;}
-  .svc-block ul{margin:0; padding-left:18px; color:var(--text-dim); font-size:14px; line-height:1.9;}
-  .svc-block li::marker{color:var(--accent);}
-  .svc-outcome{
-    background:var(--panel);
-    border:1px solid var(--line-soft);
-    padding:20px;
-    align-self:start;
-  }
-  .svc-outcome .lbl{
-    font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.1em;
-    text-transform:uppercase; color:var(--text-dim); margin-bottom:8px; display:block;
-  }
-  .svc-outcome .val{font-size:16px; color:var(--accent-2); font-weight:600; line-height:1.4;}
-  .svc-examples{
-    margin-top:18px; padding:18px 20px;
-    border:1px dashed var(--line);
-  }
-  .svc-examples .lbl{
-    font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.1em;
-    text-transform:uppercase; color:var(--accent); margin-bottom:10px; display:block;
-  }
-
-  /* ---------- station detail meta (Approach page) ---------- */
-  .stations.stations-2col{grid-template-columns:repeat(2,1fr);}
-  .station .station-meta{
-    margin-top:16px; padding-top:16px;
-    border-top:1px dashed var(--line-soft);
-    display:flex; flex-direction:column; gap:7px;
-  }
-  .station-meta .row{
-    display:flex; justify-content:space-between; gap:12px;
-    font-family:'IBM Plex Mono', monospace; font-size:10.5px; color:var(--text-dim);
-    line-height:1.5;
-  }
-  .station-meta .row b{color:var(--paper); font-weight:500; text-align:right;}
-  .approach-close{
-    margin-top:40px; padding:22px 26px;
-    border:1px dashed var(--line);
-    font-size:14.5px; color:var(--text-dim); line-height:1.7;
-  }
-  .approach-close b{color:var(--paper); font-weight:500;}
-
-  /* ---------- work page cap grid ---------- */
-  .cap-grid.cap-grid-wide{grid-template-columns:repeat(2,1fr);}
-  .cap-card.cap-card-wide{gap:20px;}
-  .cap-card.cap-card-wide .cap-visual{height:130px;}
-  .cap-why{
-    margin-top:2px; padding-top:16px; border-top:1px solid var(--line-soft);
-  }
-  .cap-why .lbl{
-    font-family:'IBM Plex Mono', monospace; font-size:10px; letter-spacing:0.1em;
-    text-transform:uppercase; color:var(--accent-2); margin-bottom:8px; display:block;
-  }
-  .cap-why p{margin:0;}
-  @media (max-width:820px){
-    .cap-grid.cap-grid-wide{grid-template-columns:1fr;}
-  }
-
-  /* ---------- about page ---------- */
-  .pullquote{
-    font-family:'IBM Plex Sans', sans-serif;
-    font-size:21px; font-weight:500; line-height:1.55;
-    color:var(--paper);
-    border-left:2px solid var(--accent);
-    padding-left:24px;
-    margin:36px 0;
-  }
-  .about-body p{font-size:15.5px; line-height:1.8; color:var(--text-dim); margin:0 0 20px;}
-  .about-body p:last-child{margin-bottom:0;}
-  .fill-in{
-    color:var(--accent);
-    font-style:normal;
-  }
-
-  /* ---------- contact form ---------- */
-  .form-panel{
-    padding:56px 40px;
-    background:var(--panel-2);
-    display:flex; flex-direction:column; gap:18px;
-  }
-  .field{display:flex; flex-direction:column; gap:8px;}
-  .field label{
-    font-family:'IBM Plex Mono', monospace; font-size:10.5px;
-    letter-spacing:0.08em; text-transform:uppercase; color:var(--text-dim);
-  }
-  .field input, .field textarea{
-    background:var(--ink);
-    border:1px solid var(--line-soft);
-    color:var(--text);
-    font-family:'IBM Plex Sans', sans-serif;
-    font-size:14px;
-    padding:12px 14px;
-    resize:vertical;
-  }
-  .field input:focus, .field textarea:focus{
-    outline:none; border-color:var(--accent);
-  }
-  .field textarea{min-height:84px;}
-  .form-panel .btn{width:100%; justify-content:center; margin-top:4px;}
-  .form-note{
-    font-size:12px; color:var(--text-dim); line-height:1.6; margin-top:4px;
-  }
-  .contact-ticket-row{
-    display:flex; gap:22px; flex-wrap:wrap;
-    margin-bottom:8px;
-  }
-  .contact-ticket-row .row{
-    font-family:'IBM Plex Mono', monospace; font-size:11.5px; color:var(--text-dim);
-  }
-  .contact-ticket-row .row b{color:var(--paper); font-weight:500; margin-left:6px;}
-
-  @media (max-width:920px){
-    .svc-block{grid-template-columns:1fr; gap:14px;}
-    .stations.stations-2col{grid-template-columns:1fr;}
-    .station::after{display:none;}
-  }
-
-  /* ---------- generic page CTA panel ---------- */
-  .cta-panel{
-    background:var(--panel);
-    border:1px solid var(--line-soft);
-    padding:48px;
-  }
-  .cta-panel .kicker{margin-bottom:14px;}
-  .cta-panel h2{font-size:clamp(26px,3.2vw,36px); color:var(--paper); max-width:600px;}
-  .cta-panel p{color:var(--text-dim); font-size:15px; line-height:1.7; max-width:520px; margin:16px 0 26px;}
-
-</style>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500;1,9..144,600&family=Inter:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<script src="assets/site.js" defer></script>
+</head>
 <body>
 
-<nav class="nav">
-  <div class="nav-inner">
-    <a href="index.html" style="text-decoration:none;"><div class="brand"><span class="mark"></span>STITCHLINE</div></a>
-    <button class="nav-toggle" aria-label="Menu" aria-expanded="false" onclick="var l=document.querySelector('.nav-links');l.classList.toggle('open');this.setAttribute('aria-expanded',l.classList.contains('open'));">☰</button>
-    <div class="nav-links">
-      <a href="services.html">Services</a>
-      <a href="approach.html">Approach</a>
-      <a href="work.html">Work</a>
-      <a href="about.html">About</a>
-      <a href="contact.html" class="btn btn-ghost" style="padding:10px 18px;">Book a Call</a>
-    </div>
-  </div>
-</nav>
-
-
-<header class="inner-hero">
+<header class="nav">
   <div class="wrap">
-    <div class="crumb"><a href="index.html">Home</a><span class="sep">/</span><span>Services</span></div>
-    <span class="eyebrow">What We Work On</span>
-    <h1>The Operation Bulletin</h1>
-    <p class="intro">Four service lines. Each one is scoped and priced on its own — you don't have to buy a transformation program to fix one bottleneck.</p>
+    <a class="logo" href="index.html" aria-label="Stitchline, home"><span class="word">Stitch</span><span class="seam" aria-hidden="true"></span><em>line</em></a>
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links">Menu</button>
+    <ul class="nav-links" id="nav-links">
+      <li><a href="services.html" aria-current="page">Services</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="team.html#how-we-work">How we work</a></li>
+      <li><a class="btn" href="contact.html">Contact</a></li>
+    </ul>
   </div>
 </header>
 
-<div class="wrap"><div class="stitch"><div class="dashes"></div><span class="label">Full Bulletin — 4 Ops</span><div class="dashes"></div></div></div>
+<main>
 
-<section style="padding-top:8px;">
+  <section class="hero">
+    <div class="wrap">
+      <span class="eyebrow">Services</span>
+      <h1>Five services. <em>Each one ends with your sign-off.</em></h1>
+      <p class="lede">The first four follow a garment from quote to floor to plan. The fifth helps product development teams see what buyers are moving towards.</p>
+    </div>
+  </section>
+
   <div class="wrap">
 
-    <div class="svc-block">
-      <div class="svc-no mono">01</div>
+    <section class="service" id="pre-costing">
       <div>
-        <h3>Planning Dashboards</h3>
-        <p>Plan-vs-order, buyer mix, carryover tracking — built as a single dashboard your production managers open every morning instead of five separate spreadsheets.</p>
-        <ul>
-          <li>Built from your actual sewing-line plan data</li>
-          <li>Overview, buyer-mix, and key-insights views</li>
-          <li>One "number to watch" banner surfaced at the top</li>
-          <li>Delivered as a standalone tool your team owns — no ongoing license fee</li>
-        </ul>
-      </div>
-      <div class="svc-outcome">
-        <span class="lbl">Outcome</span>
-        <div class="val">One daily source of truth, not five conflicting spreadsheets.</div>
-      </div>
-    </div>
-
-    <div class="svc-block">
-      <div class="svc-no mono">02</div>
-      <div>
-        <h3>Bespoke AI &amp; Agentic Solutions</h3>
-        <p>Custom AI/ML and agentic tools, scoped to one capability at a time. Not a platform sale — a specific problem, solved with the smallest tool that actually solves it.</p>
-        <div class="svc-examples">
-          <span class="lbl">Illustrative Examples</span>
-          <ul style="margin:0;">
-            <li>Computer-vision pilots for defect or measurement detection at a specific operation</li>
-            <li>Demand-sensing models built from your own order and sell-through history</li>
-            <li>An agent that watches live line data and drafts a rebalance recommendation for review</li>
-            <li>An agent that triages buyer feedback and complaint data into your QA queue</li>
-          </ul>
+        <span class="num">01</span>
+        <h2>AI pre-costing</h2>
+        <span class="stage">Working prototype · denim</span>
+        <div class="illo" aria-hidden="true">
+          <svg viewBox="0 0 360 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="8" y="20" width="62" height="80" rx="4"/><path d="M20 40h38M20 52h38M20 64h26"/>
+            <rect x="26" y="12" width="62" height="80" rx="4" fill="var(--paper)"/><path d="M38 32h38M38 44h38M38 56h24"/>
+            <path d="M118 56h86" stroke="var(--accent)" stroke-dasharray="4 5"/><path d="M198 50l8 6-8 6" stroke="var(--accent)"/>
+            <rect x="236" y="14" width="112" height="92" rx="4"/>
+            <path d="M250 34h40M250 54h40M250 74h40M250 94h40"/>
+            <path d="M304 34h30M310 54h18M300 74h38M306 94h24" stroke="var(--accent)" stroke-width="5" stroke-opacity=".35"/>
+          </svg>
         </div>
-        <p style="margin-top:18px;"><b style="color:var(--paper);">How we scope it:</b> we start with a two-to-four-week pilot against one capability, prove it against your own data, then decide together whether it's worth building into production. No year-long AI transformation contracts.</p>
       </div>
-      <div class="svc-outcome">
-        <span class="lbl">Outcome</span>
-        <div class="val">A working pilot you can evaluate on your own data before committing further.</div>
-      </div>
-    </div>
-
-    <div class="svc-block">
-      <div class="svc-no mono">03</div>
       <div>
-        <h3>IE Automation Tools</h3>
-        <p>The parts of IE work that are 80% pattern-matching and 20% judgment — stitch-type inference, seam-length estimation, thread consumption — automated with a two-layer approach: an LLM layer for the fuzzy judgment calls, a deterministic formula engine for the math that has to be exactly right every time.</p>
-        <ul>
-          <li>Automated bulletin generation from garment specs</li>
-          <li>Thread consumption modeling (cone length, ticket number, stitch density)</li>
-          <li>Deterministic engine for anything safety- or costing-critical</li>
-          <li>Built as a tool your team runs, not a one-off report</li>
-        </ul>
+        <p class="lede">A merchandiser builds a quote from a tech pack in hours. That quote fixes the price of the whole order.</p>
+        <p>Our agent reads your past cost sheets, tech packs and markers. It finds your closest past styles. It drafts each cost line as a range, with the past styles it came from. Prices are masked before the AI reads a file. Each figure links back to the past style it came from.</p>
+        <div class="io">
+          <div><b>What goes in</b><p>A new tech pack, plus your past cost sheets and markers.</p></div>
+          <div><b>What comes out</b><p>A draft cost sheet. Every line has a range and its sources.</p></div>
+        </div>
       </div>
-      <div class="svc-outcome">
-        <span class="lbl">Outcome</span>
-        <div class="val">Bulletin turnaround: hours to minutes.</div>
-      </div>
-    </div>
+    </section>
 
-    <div class="svc-block">
-      <div class="svc-no mono">04</div>
+    <section class="service" id="sam-video">
       <div>
-        <h3>Line Balancing &amp; Layout</h3>
-        <p>Bottlenecks usually aren't where supervisors think they are. We treat your line as the optimization problem it is — verify SAM values against actual cycle times, quantify the real constraint, then rebalance operator allocation and machine layout around it.</p>
-        <ul>
-          <li>Bottleneck and WIP analysis across the full line</li>
-          <li>SAM verification against measured cycle times — corrected bulletin included</li>
-          <li>Operator-to-operation reallocation, solved as an optimization problem</li>
-          <li>Machine layout adjustment recommendations, with before/after tracking</li>
-        </ul>
+        <span class="num">02</span>
+        <h2>SAM from video</h2>
+        <span class="stage">Pilot · seeking first lines</span>
+        <div class="illo" aria-hidden="true">
+          <svg viewBox="0 0 360 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="10" y="34" width="70" height="50" rx="6"/><path d="M80 50l22-12v42l-22-12"/><circle cx="45" cy="59" r="12"/>
+            <path d="M126 59h86" stroke="var(--accent)" stroke-dasharray="4 5"/><path d="M206 53l8 6-8 6" stroke="var(--accent)"/>
+            <circle cx="288" cy="64" r="40"/><path d="M280 18h16M288 18v6"/>
+            <path d="M288 64V38" stroke="var(--accent)"/><path d="M288 64l18 12"/>
+          </svg>
+        </div>
       </div>
-      <div class="svc-outcome">
-        <span class="lbl">Outcome</span>
-        <div class="val">A line balanced to its real bottleneck — target +15–25 efficiency points.</div>
+      <div>
+        <p class="lede">CM, line targets and capacity are all set from SAM. It is usually estimated once, at costing. Few operations are timed.</p>
+        <p>We record a line with a phone or fixed camera. The model is built to find each operation cycle and measure its time. Your IE confirms method, rating and allowances before any SAM changes.</p>
+        <div class="io">
+          <div><b>What goes in</b><p>Video of one line, plus your operation bulletin.</p></div>
+          <div><b>What comes out</b><p>Measured time for every operation, compared with the bulletin.</p></div>
+        </div>
+        <p class="note">Pilot terms: one line, one product family, measured against your own bulletin.</p>
       </div>
-    </div>
+    </section>
+
+    <section class="service" id="line-balancing">
+      <div>
+        <span class="num">03</span>
+        <h2>Line balancing</h2>
+        <span class="stage">Engagement</span>
+        <div class="illo" aria-hidden="true">
+          <svg viewBox="0 0 360 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 60h332" stroke-opacity=".35"/>
+            <circle cx="40" cy="60" r="16" fill="var(--paper)"/><circle cx="110" cy="60" r="16" fill="var(--paper)"/>
+            <circle cx="180" cy="60" r="22" fill="var(--paper)" stroke="var(--accent)" stroke-width="2"/>
+            <circle cx="250" cy="60" r="16" fill="var(--paper)"/><circle cx="320" cy="60" r="16" fill="var(--paper)"/>
+            <path d="M180 92v14M168 100l12 8 12-8" stroke="var(--accent)"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <p class="lede">Measured SAM shows where the real bottleneck sits.</p>
+        <p>We reassign operators and machines around it, together with your IE and line chief. The plan is checked on the floor before it becomes the new standard.</p>
+        <div class="io">
+          <div><b>What goes in</b><p>Measured operation times and your current line layout.</p></div>
+          <div><b>What comes out</b><p>A rebalanced line plan your team runs.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="service" id="planning">
+      <div>
+        <span class="num">04</span>
+        <h2>Planning dashboards</h2>
+        <span class="stage">Prototype</span>
+        <div class="illo" aria-hidden="true">
+          <svg viewBox="0 0 360 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="10" y="30" width="44" height="56" rx="3"/><rect x="22" y="22" width="44" height="56" rx="3" fill="var(--paper)"/><rect x="34" y="14" width="44" height="56" rx="3" fill="var(--paper)"/>
+            <path d="M44 28h24M44 38h24M44 48h16"/>
+            <path d="M110 56h86" stroke="var(--accent)" stroke-dasharray="4 5"/><path d="M190 50l8 6-8 6" stroke="var(--accent)"/>
+            <rect x="228" y="16" width="120" height="84" rx="6"/>
+            <path d="M228 36h120"/><path d="M244 56h36M244 70h52M244 84h28"/>
+            <circle cx="324" cy="70" r="12" stroke="var(--accent)"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <p class="lede">One morning view, built from the plan sheets you already keep.</p>
+        <p>Planners stop stitching spreadsheets together each day. The dashboard reads your own plan data and shows where each line stands against plan. Your team owns it. There is no licence fee.</p>
+        <div class="io">
+          <div><b>What goes in</b><p>The plan and production sheets your team already keeps.</p></div>
+          <div><b>What comes out</b><p>One shared view of the plan for the morning meeting.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="service" id="trend-intelligence">
+      <div>
+        <span class="num">05</span>
+        <h2>Product trend intelligence</h2>
+        <span class="stage">Platform in development</span>
+        <div class="illo" aria-hidden="true">
+          <svg viewBox="0 0 360 120" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 20h92"/>
+            <path d="M24 20v8M54 20v8M84 20v8"/>
+            <path d="M16 28h16l2 66H14zM46 28h16l2 66H44zM76 28h16l2 66H74z"/>
+            <path d="M128 58h76" stroke="var(--accent)" stroke-dasharray="4 5"/><path d="M198 52l8 6-8 6" stroke="var(--accent)"/>
+            <rect x="232" y="14" width="116" height="92" rx="4"/>
+            <path d="M246 32h60M246 44h40"/>
+            <rect x="246" y="58" width="38" height="36" rx="3" stroke="var(--accent)"/><rect x="296" y="58" width="38" height="36" rx="3" stroke="var(--accent)"/>
+          </svg>
+        </div>
+      </div>
+      <div>
+        <p class="lede">For PD&amp;D and design teams. Today a designer builds the buyer trend deck by hand, every season.</p>
+        <p>AI reads public retailer product pages and sees what is new on the shelf. It drafts a trend report and design concepts from what it found. Designers review and edit the draft before anything goes to a buyer.</p>
+        <div class="io">
+          <div><b>What goes in</b><p>The buyers and categories your team designs for.</p></div>
+          <div><b>What comes out</b><p>A draft trend report and design concepts, with the products they came from.</p></div>
+        </div>
+        <p class="note">We are building <strong>Bluecast</strong>, our trend intelligence platform.</p>
+      </div>
+    </section>
 
   </div>
-</section>
 
-<section style="padding-top:0;">
+  <section class="section contact-band" aria-labelledby="contact-h">
+    <div class="wrap">
+      <h2 id="contact-h">Not sure where to start? <em>Tell us what hurts most.</em></h2>
+      <p style="margin-top:1rem">A first project covers one service and one product family.</p>
+      <div class="btn-row">
+        <a class="btn" href="https://wa.me/8801712775303">WhatsApp us</a>
+        <a class="btn btn--ghost" href="contact.html">Other ways to reach us</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
   <div class="wrap">
-    <div class="cta-panel">
-      <span class="kicker">Not Sure Which One You Need?</span>
-      <h2>Book a call and we'll figure it out together.</h2>
-      <p>You don't need to diagnose your own bottleneck before talking to us — that's the first thing we do together, on the call.</p>
-      <a href="contact.html" class="btn">Book a Discovery Call →</a>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap foot-inner">
-    <span>© 2026 Stitchline Consulting — Dhaka, Bangladesh</span>
     <div>
-      <a href="mailto:hello@stitchline.co">Email</a>
-      <a href="contact.html">Book a Call</a>
+      <a class="logo" href="index.html" aria-label="Stitchline, home"><span class="word">Stitch</span><span class="seam" aria-hidden="true"></span><em>line</em></a>
+      <p>Applied AI for garment factories in Bangladesh.</p>
     </div>
+    <ul>
+      <li><a href="services.html">Services</a></li>
+      <li><a href="team.html">Team</a></li>
+      <li><a href="team.html#how-we-work">How we work</a></li>
+      <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <ul>
+      <li><a href="mailto:stitchline.io@gmail.com">stitchline.io@gmail.com</a></li>
+      <li><a href="https://wa.me/8801712775303">WhatsApp +880 1712 775303</a></li>
+      <li>Dhaka, Bangladesh</li>
+    </ul>
+    <p class="legal">© 2026 Stitchline</p>
   </div>
 </footer>
 
