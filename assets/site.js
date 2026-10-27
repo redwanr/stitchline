@@ -12,6 +12,23 @@
     });
   }
 
+  // "Copy email" buttons: mailto links open nothing on many office PCs.
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    var label = btn.textContent;
+    btn.addEventListener('click', function () {
+      var text = btn.getAttribute('data-copy');
+      var done = function (ok) {
+        btn.textContent = ok ? 'Copied' : text;
+        if (ok) setTimeout(function () { btn.textContent = label; }, 2000);
+      };
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(false); });
+      } else {
+        done(false); // no clipboard access: show the address so it can be copied by hand
+      }
+    });
+  });
+
   var items = document.querySelectorAll('.reveal');
   if (!('IntersectionObserver' in window)) return;
   document.documentElement.classList.add('reveal-on');
