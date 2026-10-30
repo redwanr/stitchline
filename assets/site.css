@@ -34,6 +34,8 @@ a:hover { color: var(--ink); }
 
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 
+::selection { background: var(--accent); color: var(--paper); }
+
 h1, h2, h3 {
   font-family: var(--serif);
   font-weight: 400;
@@ -67,6 +69,8 @@ p { margin: 0 0 1em; }
 .lede { font-size: clamp(1.08rem, 1.6vw, 1.25rem); color: var(--muted); max-width: 38em; }
 
 .muted { color: var(--muted); }
+
+.nowrap { white-space: nowrap; }
 
 /* Buttons */
 .btn {
@@ -148,7 +152,8 @@ p { margin: 0 0 1em; }
   background: none;
   border: 1px solid var(--rule);
   border-radius: 999px;
-  padding: 0.5em 1em;
+  min-height: 44px;
+  padding: 0.5em 1.1em;
   font: 500 0.9rem var(--sans);
   color: var(--ink);
   cursor: pointer;
@@ -194,6 +199,7 @@ p { margin: 0 0 1em; }
 .svc-list a {
   display: grid;
   grid-template-columns: 2.6rem 1fr;
+  align-content: start;
   gap: 4px 12px;
   padding: 28px 24px 28px 0;
   color: inherit;
@@ -244,7 +250,7 @@ p { margin: 0 0 1em; }
 .faces { display: flex; }
 .faces img {
   width: 76px; height: 76px; border-radius: 50%;
-  border: 3px solid var(--paper-2);
+  border: 3px solid var(--paper);
   margin-left: -14px;
 }
 .faces img:first-child { margin-left: 0; }
@@ -257,6 +263,11 @@ p { margin: 0 0 1em; }
 .person .eyebrow { margin-bottom: 0.4rem; }
 .person h2 { font-size: 1.7rem; margin-bottom: 0.5rem; }
 .person .cred { color: var(--muted); margin-bottom: 1.2rem; }
+@media (min-width: 901px) {
+  /* Rows shared across the three people, so the "Leads" rules line up. */
+  .team-grid { row-gap: 0; }
+  .person { display: grid; grid-row: span 5; grid-template-rows: subgrid; }
+}
 .person .leads { border-top: 1px solid var(--rule); padding-top: 14px; font-size: 0.95rem; }
 .person .leads b { display: block; font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 2px; }
 
@@ -338,3 +349,14 @@ p { margin: 0 0 1em; }
   * { scroll-behavior: auto !important; }
 }
 html { scroll-behavior: smooth; }
+
+/* Print: everything visible, no interactive chrome, ink band drops its ground. */
+@media print {
+  .reveal-on .reveal { opacity: 1; transform: none; transition: none; }
+  .nav-toggle { display: none; }
+  .js .nav-links { display: flex; }
+  .btn-row { display: none; }
+  .contact-band { background: none; color: var(--ink); }
+  .contact-band h2 em { color: var(--accent); }
+  .contact-band p { color: var(--muted); }
+}

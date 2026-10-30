@@ -5,10 +5,23 @@
   var nav = document.querySelector('.nav');
   var toggle = document.querySelector('.nav-toggle');
   if (nav && toggle) {
-    toggle.addEventListener('click', function () {
-      var open = nav.classList.toggle('is-open');
+    var setOpen = function (open) {
+      nav.classList.toggle('is-open', open);
       toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
       toggle.textContent = open ? 'Close' : 'Menu';
+    };
+    toggle.addEventListener('click', function () {
+      setOpen(!nav.classList.contains('is-open'));
+    });
+    // A link to a section of the current page leaves the menu open otherwise.
+    nav.querySelector('.nav-links').addEventListener('click', function (e) {
+      if (e.target.closest('a')) setOpen(false);
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && nav.classList.contains('is-open')) {
+        setOpen(false);
+        toggle.focus();
+      }
     });
   }
 
