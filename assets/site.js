@@ -1,7 +1,36 @@
-// Mobile nav toggle and gentle scroll reveal. The page works without this file.
+// Theme toggle, mobile nav toggle and gentle scroll reveal. The page works without this file.
 (function () {
   // Set here so links stay visible when this file fails to load.
   document.documentElement.classList.add('js');
+
+  // The saved choice is applied by the inline script in each page's head.
+  var root = document.documentElement;
+  var themeBtn = document.querySelector('.theme-toggle');
+  var themeMeta = document.querySelector('meta[name="theme-color"]');
+  var systemDark = window.matchMedia('(prefers-color-scheme: dark)');
+  var isDark = function () {
+    var saved = root.getAttribute('data-theme');
+    return saved ? saved === 'dark' : systemDark.matches;
+  };
+  var syncTheme = function () {
+    var dark = isDark();
+    if (themeBtn) {
+      themeBtn.classList.toggle('is-dark', dark);
+      themeBtn.setAttribute('aria-label', dark ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+    if (themeMeta) themeMeta.content = getComputedStyle(root).getPropertyValue('--paper').trim();
+  };
+  if (themeBtn) {
+    themeBtn.addEventListener('click', function () {
+      var next = isDark() ? 'light' : 'dark';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('theme', next); } catch (e) {}
+      syncTheme();
+    });
+  }
+  systemDark.addEventListener('change', syncTheme);
+  syncTheme();
+
   var nav = document.querySelector('.nav');
   var toggle = document.querySelector('.nav-toggle');
   if (nav && toggle) {
