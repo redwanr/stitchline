@@ -1,4 +1,4 @@
-/* Stitchline — shared styles. Editorial calm: warm paper, serif headlines, one indigo accent. */
+/* Bluecast AI — shared styles. Editorial calm: warm paper, serif headlines, one indigo accent. */
 
 :root {
   --paper: #f6f3ec;
@@ -161,7 +161,7 @@ p { margin: 0 0 1em; }
 }
 .logo:hover .seam { background: repeating-linear-gradient(to bottom, var(--ink) 0 5px, transparent 5px 9px); }
 
-/* Homepage load: the seam stitches top to bottom, then "line" slides in. */
+/* Homepage load: the seam stitches top to bottom, then "AI" slides in. */
 .logo--animate .seam { animation: stitch-down 0.7s steps(7, end) 0.15s both; }
 .logo--animate em { animation: line-in 0.6s cubic-bezier(.2,.7,.2,1) 0.85s both; }
 .logo--animate .word { animation: word-in 0.5s ease-out both; }
